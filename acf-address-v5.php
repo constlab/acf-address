@@ -30,7 +30,7 @@ class acf_field_address extends acf_field
         *  label (string) Multiple words, can include spaces, visible when selecting a field type
         */
 
-        $this->label = __('Address', 'acf-address');
+        $this->label = 'Адрес';//__('Address', 'acf-address');
 
 
         /*
@@ -122,9 +122,9 @@ class acf_field_address extends acf_field
         *  This will show what data is available
         */
 
-        echo '<pre>';
+        /*echo '<pre>';
         print_r($field);
-        echo '</pre>';
+        echo '</pre>';*/
 
 
         /*
@@ -198,11 +198,15 @@ class acf_field_address extends acf_field
 
         </div>
 
-        <a href="#TB_inline?width=900&height=400&inlineId=acf-address" class="thickbox">View my inline content!</a>
-
         <input type="text" id="acf-address-input" name="<?php echo esc_attr($field['name']) ?>"
                value="<?php echo esc_attr($field['value']) ?>"
-               style="font-size:<?php echo $field['font_size'] ?>px;"/>
+               style="display: none" />
+
+        <div>
+            <input type="text" id="acf-address-display" style="width: 80%" readonly />
+            <a href="#TB_inline?width=900&height=400&inlineId=acf-address" class="button thickbox">Выбрать адрес</a>
+        </div>
+
     <?php
     }
 

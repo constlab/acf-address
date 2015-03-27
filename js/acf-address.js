@@ -184,6 +184,17 @@
             geoPoint.geometry.setCoordinates(loadCoord);
             addressMap.setCenter(loadCoord);
             addressMap.setZoom(loadZoom);
+
+            $('#acf-address-display').val(field.addressFull);
+
+            if (field.addressMetro != undefined || field.addressMetroFull != undefined) {
+                $('.metro-row').show();
+                $('input[name="metro"]').val(field.addressMetro);
+                $('input[name="metro_full"]').val(field.addressMetroFull);
+                $('input[name="metro_dist"]').val(field.metroDist);
+
+            }
+
         }
 
         $('#address-btn-cancel').click(function () {
@@ -192,6 +203,7 @@
 
         $('#address-btn-ok').click(function () {
             $('#acf-address-input').val(JSON.stringify(field));
+            $('#acf-address-display').val(field.addressFull);
             tb_remove();
         });
 
