@@ -115,6 +115,10 @@
                     $('input[name="metro_full"]').val(field.addressMetroFull);
                     $('input[name="metro_dist"]').val(field.metroDist);
 
+                    var metroLine = colorMetro(field.addressMetroFull);
+                    if (metroLine != undefined)
+                        field.metroLine = metroLine;
+
                 }
             });
         }
@@ -132,37 +136,13 @@
                 field.addressFull = getObject.properties.get('text');
 
                 updateField();
-                /*res.geoObjects.each(function (obj) {
-                 console.log(obj.properties.get('text'));
-                 });*/
             });
 
-            /*ymaps.geocode(coord, {
-             kind: 'metro',
-             results: 1
-             }).then(function (res) {
-             if (res.geoObjects.getLength()) {
-             var m0 = res.geoObjects.get(0);
-             var coords = m0.geometry.getCoordinates();
-
-             field.coordinatesMetro = coords;
-
-             /*dist0 = ymaps.coordSystem.geo.getDistance(coord, m0_coords);
-             dist = ymaps.formatter.distance(dist0);*/
-            //console.info(m0_coords);
-
-            /* res.geoObjects.options.set('preset', 'twirl#metroMoscowIcon');
-             addressMap.geoObjects.add(res.geoObjects);
-
-             var getObject = res.geoObjects.get(0);
-             field.addressMetro = getObject.properties.get('name');
-             field.addressMetroFull = getObject.properties.get('text');
-
-             updateField();
-             }
-             });*/
         }
 
+        /**
+         * Обновление полей с адресом
+         */
         function updateField() {
 
             $('input[name="address"]').val(field.address);
@@ -194,6 +174,38 @@
                 $('input[name="metro_dist"]').val(field.metroDist);
 
             }
+
+        }
+
+        /**
+         * Возвращает номер линии метро
+         *
+         * @param metro
+         * @returns {*}
+         */
+        function colorMetro(metro) {
+            var metroArray = metro.split(',');
+            if (metroArray.length >= 3) {
+                metro = metroArray[2].replace('линия', '').trim();
+            } else
+                return undefined;
+
+            var moscowMetro = {};
+
+            moscowMetro['Сокольническая'] = 'line_1';
+            moscowMetro['Замоскворецкая'] = 'line_2';
+            moscowMetro['Арбатско-Покровская'] = 'line_3';
+            moscowMetro['Филёвская'] = 'line_4';
+            moscowMetro['Кольцевая'] = 'line_5';
+            moscowMetro['Калужско-Рижская'] = 'line_6';
+            moscowMetro['Таганско-Краснопресненская'] = 'line_7';
+            moscowMetro['Калининско-Солнцевская'] = 'line_8';
+            moscowMetro['Серпуховско-Тимирязевская'] = 'line_9';
+            moscowMetro['Люблинско-Дмитровская'] = 'line_10';
+            moscowMetro['Каховская'] = 'line_11';
+            moscowMetro['Бутовская'] = 'line_12';
+
+            return moscowMetro[metro];
 
         }
 
