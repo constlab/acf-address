@@ -1,0 +1,17 @@
+#TB_window {
+    height: auto !important;
+}
+
+#TB_ajaxContent {
+    height: auto !important;
+    width: auto !important;
+    padding: 20px;
+}
+
+#form-address input[type="text"] {
+    width: 100%;
+}
+
+.metro-row{
+    display: none;
+}
