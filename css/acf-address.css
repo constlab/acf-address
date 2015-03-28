@@ -12,6 +12,27 @@
     width: 100%;
 }
 
-.metro-row{
+.metro-row {
     display: none;
+}
+
+.acf-input-parent {
+    display: table;
+    width: 100%;
+}
+
+.acf-input-left {
+    display: table-cell;
+    width: 65%;
+}
+
+.acf-input-right {
+    display: table-cell;
+    width: 35%;
+    line-height: normal;
+    padding-left: 10px;
+}
+
+.acf-input-right > a {
+    margin-top: -5px !important;
 }

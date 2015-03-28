@@ -202,10 +202,14 @@ class acf_field_address extends acf_field
                value="<?php echo esc_attr($field['value']) ?>"
                style="display: none" />
 
-        <div>
-            <input type="text" id="acf-address-display" style="width: 80%" readonly />
-            <a href="#" class="button" id="acf-address-clear">Очистить</a>
-            <a href="#TB_inline?width=900&height=400&inlineId=acf-address" class="button thickbox" id="acf-address-btn">Выбрать адрес</a>
+        <div class="acf-input-parent">
+            <div class="acf-input-left">
+                <input type="text" id="acf-address-display" style="width: 100%" readonly />
+            </div>
+            <div class="acf-input-right">
+                <a href="#" class="button" id="acf-address-clear">Очистить</a>&nbsp;
+                <a href="#TB_inline?width=900&height=400&inlineId=acf-address" class="button thickbox" id="acf-address-btn">Выбрать адрес</a>
+            </div>
         </div>
 
     <?php
