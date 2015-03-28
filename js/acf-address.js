@@ -2,21 +2,28 @@
 
     ymaps.ready(function () {
 
+        /**
+         * Массив сохраняемых данных
+         * @type {{}}
+         */
         var field = {};
 
+        /**
+         * Центр карты и координаты метки по умолчанию
+         * @type {number[]}
+         */
         var centerMap = [55.753994, 37.622093];
 
-        var addressMap = new ymaps.Map('map', {
-            center: centerMap,
-            zoom: 9,
-            behaviors: ['default', 'scrollZoom']
-        });
+        /**
+         * Карта
+         * @type {undefined}
+         */
+        var addressMap = undefined;
 
-        addressMap.events.add('boundschange', function (e) {
-            var zoom = e.get("newZoom");
-            field.zoom = zoom;
-        });
-
+        /**
+         * Кнопка определения местоположения
+         * @type {GeolocationButton}
+         */
         var geolocationButton = new GeolocationButton({
             data: {
                 image: btn.img,
@@ -29,6 +36,10 @@
             selectOnClick: false
         });
 
+        /**
+         * Строка поиска адреса
+         * @type {ymaps.control.SearchControl}
+         */
         var searchControl = new ymaps.control.SearchControl({
             noPlacemark: true
         });
@@ -45,15 +56,15 @@
 
         });
 
+        /**
+         * Метка
+         * @type {ymaps.GeoObject}
+         */
         var geoPoint = new ymaps.GeoObject({
             geometry: {
                 type: "Point",
                 coordinates: centerMap
-            }/*,
-             properties: {
-             iconContent: '',
-             hintContent: ''
-             }*/
+            }
         }, {
             preset: 'islands#blackStretchyIcon',
             draggable: true
@@ -63,6 +74,10 @@
             changeLocation();
         });
 
+        /**
+         * Кнопка для поиска ближайшего метро
+         * @type {Button}
+         */
         var button = new ymaps.control.Button({
             data: {
                 image: btn.metro,
@@ -75,15 +90,6 @@
         button.events.add('click', function () {
             findMetro();
         });
-
-        addressMap.controls
-            .add(geolocationButton, {top: 5, left: 100})
-            .add('zoomControl')
-            .add('typeSelector', {top: 5, right: 5})
-            .add(button, {top: 5, left: 65})
-            .add(searchControl, {top: 5, left: 200});
-
-        addressMap.geoObjects.add(geoPoint);
 
         /**
          * Поиск ближайшего метро
@@ -155,7 +161,7 @@
          * Загрузка данных
          */
         function loadField() {
-            field = JSON.parse($('#acf-address-input').val());
+            //field = JSON.parse($('#acf-address-input').val());
             updateField();
 
             var loadCoord = (field.coordinates != undefined) ? field.coordinates : centerMap;
@@ -164,8 +170,6 @@
             geoPoint.geometry.setCoordinates(loadCoord);
             addressMap.setCenter(loadCoord);
             addressMap.setZoom(loadZoom);
-
-            $('#acf-address-display').val(field.addressFull);
 
             if (field.addressMetro != undefined || field.addressMetroFull != undefined) {
                 $('.metro-row').show();
@@ -219,7 +223,49 @@
             tb_remove();
         });
 
-        loadField();
+        $('#acf-address-btn').click(function () {
+
+            if (addressMap != undefined)
+                addressMap.destroy();
+
+            addressMap = new ymaps.Map('map', {
+                center: centerMap,
+                zoom: 9,
+                behaviors: ['default', 'scrollZoom']
+            });
+
+            addressMap.events.add('boundschange', function (e) {
+                var zoom = e.get("newZoom");
+                field.zoom = zoom;
+            });
+
+            addressMap.controls
+                .add(geolocationButton, {top: 5, left: 100})
+                .add('zoomControl')
+                .add('typeSelector', {top: 5, right: 5})
+                .add(button, {top: 5, left: 65})
+                .add(searchControl, {top: 5, left: 200});
+
+            addressMap.geoObjects.add(geoPoint);
+
+            loadField();
+
+        });
+
+        $('#acf-address-clear').click(function () {
+            field = {};
+
+            $('.metro-row').hide();
+
+            $('#acf-address-display').val('');
+            $('#acf-address-display').val('');
+            $('input[name="metro"]').val('');
+            $('input[name="metro_full"]').val('');
+            $('input[name="metro_dist"]').val('');
+        });
+
+        field = JSON.parse($('#acf-address-input').val());
+        $('#acf-address-display').val(field.addressFull);
 
     });
 

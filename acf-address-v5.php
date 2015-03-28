@@ -204,7 +204,8 @@ class acf_field_address extends acf_field
 
         <div>
             <input type="text" id="acf-address-display" style="width: 80%" readonly />
-            <a href="#TB_inline?width=900&height=400&inlineId=acf-address" class="button thickbox">Выбрать адрес</a>
+            <a href="#" class="button" id="acf-address-clear">Очистить</a>
+            <a href="#TB_inline?width=900&height=400&inlineId=acf-address" class="button thickbox" id="acf-address-btn">Выбрать адрес</a>
         </div>
 
     <?php
