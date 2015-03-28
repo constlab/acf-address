@@ -25,7 +25,8 @@ function GeolocationButton(params, options) {
         // Максимальное время жизни полученных данных (в миллисекундах).
         maximumAge: 1000,
         // Метка
-        point: undefined
+        point: undefined,
+        afterSearch: undefined
     }, params.geolocationOptions);
 }
 
@@ -179,6 +180,10 @@ ymaps.ready(function () {
 
             if (options.point != undefined) {
                 options.point.geometry.setCoordinates(location);
+            }
+
+            if (options.afterSearch != undefined) {
+                options.afterSearch();
             }
 
         },

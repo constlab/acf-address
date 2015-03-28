@@ -60,7 +60,10 @@
             geolocationOptions: {
                 enableHighAccuracy: true,
                 noPlacemark: false,
-                point: geoPoint
+                point: geoPoint,
+                afterSearch: function () {
+                    changeLocation()
+                }
             }
         }, {
             selectOnClick: false
@@ -162,11 +165,8 @@
          * Обновление полей с адресом
          */
         function updateField() {
-
             $('input[name="address"]').val(field.address);
             $('input[name="address_full"]').val(field.addressFull);
-
-            console.log(field);
         }
 
         /**
