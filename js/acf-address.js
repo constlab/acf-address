@@ -4,6 +4,16 @@
 
         /**
          * Массив сохраняемых данных
+         *
+         * address - краткий адрес, без города
+         * addressFull - полный адрес, с городом
+         * coordinates - координаты адреса
+         * coordinatesMetro - координаты ближайшей станции метро
+         * metroDist - расстояние до ближайшей станции метро (в метрах)
+         * addressMetro - адрес ближайшей станции метро
+         * addressMetroFull - полный адрес ближайшей станции метро
+         * metroLine - ближайшая линия метро, формат line_{number}
+         *
          * @type {{}}
          */
         var field = {};
@@ -116,7 +126,7 @@
 
                     var getObject = res.geoObjects.get(0);
                     field.addressMetro = getObject.properties.get('name');
-                    field.addressMetroFull = getObject.properties.get('text');
+                    field.addressMetroFull = getObject.properties.get('text').replace('Россия,', '').trim();
 
                     $('.metro-row').show();
                     $('input[name="metro"]').val(field.addressMetro);
@@ -141,7 +151,7 @@
             ymaps.geocode(coord).then(function (res) {
                 var getObject = res.geoObjects.get(0);
                 field.address = getObject.properties.get('name');
-                field.addressFull = getObject.properties.get('text');
+                field.addressFull = getObject.properties.get('text').replace('Россия,', '').trim();
 
                 updateField();
             });
@@ -206,6 +216,7 @@
             moscowMetro['Калужско-Рижская'] = 'line_6';
             moscowMetro['Таганско-Краснопресненская'] = 'line_7';
             moscowMetro['Калининско-Солнцевская'] = 'line_8';
+            moscowMetro['Калининская'] = 'line_8';
             moscowMetro['Серпуховско-Тимирязевская'] = 'line_9';
             moscowMetro['Люблинско-Дмитровская'] = 'line_10';
             moscowMetro['Каховская'] = 'line_11';
@@ -264,6 +275,10 @@
             $('input[name="metro"]').val('');
             $('input[name="metro_full"]').val('');
             $('input[name="metro_dist"]').val('');
+        });
+
+        $('#acf-address-display').click(function () {
+            $('#acf-address-btn').trigger('click');
         });
 
         field = JSON.parse($('#acf-address-input').val());

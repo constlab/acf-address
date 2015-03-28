@@ -33,6 +33,10 @@
     padding-left: 10px;
 }
 
+.acf-input-left > input[type="text"] {
+    cursor: pointer;
+}
+
 .acf-input-right > a {
     margin-top: -5px !important;
 }

@@ -28,7 +28,35 @@ function register_fields_address()
 
 add_action('acf/register_fields', 'register_fields_address');
 
-/*if (is_admin()) {
-    require_once('ajax-controller.php');
-    new ajax_controller();
-}*/
+/**
+ * Функция для использования в шаблонах
+ *
+ * @param $field_selector
+ * @param int $post_id
+ * @param bool $full
+ * @return string
+ */
+function address_field($field_selector, $post_id = 0, $full = true)
+{
+    if ($post_id == 0) {
+        $post_id = get_the_ID();
+    }
+
+    if (!$post_id) {
+        return '';
+    }
+
+    $field = get_field($field_selector, $post_id);
+    if (empty($field)) {
+        return '';
+    }
+
+    $field = json_decode($field);
+    $address = ($full) ? $field->addressFull : $field->address;
+
+    if ($field->addressMetro) {
+        return '<div class="metro ' . $field->metroLine . '" title="' . $field->addressMetro . ' (около ' . $field->metroDist . ' м.)"></div>' . $address;
+    }
+
+    return $address;
+}
