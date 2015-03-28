@@ -23,7 +23,9 @@ function GeolocationButton(params, options) {
         // Максимальное время ожидания ответа (в миллисекундах).
         timeout: 10000,
         // Максимальное время жизни полученных данных (в миллисекундах).
-        maximumAge: 1000
+        maximumAge: 1000,
+        // Метка
+        point: undefined
     }, params.geolocationOptions);
 }
 
@@ -72,7 +74,7 @@ ymaps.ready(function () {
             // Меняем иконку кнопки на прелоадер.
             this.toggleIconImage('loader.gif');
 
-            if(navigator.geolocation) {
+            if (navigator.geolocation) {
                 // Запрашиваем текущие координаты устройства.
                 navigator.geolocation.getCurrentPosition(
                     ymaps.util.bind(this._onGeolocationSuccess, this),
@@ -108,7 +110,7 @@ ymaps.ready(function () {
             // Меняем иконку кнопки обратно.
             this.toggleIconImage(btn.img);
 
-            if(console) {
+            if (console) {
                 console.warn('GeolocationError: ' + GeolocationButton.ERRORS[error.code - 1]);
             }
         },
@@ -147,33 +149,38 @@ ymaps.ready(function () {
                 circle = this._circle;
 
             // Смена центра карты (если нужно)
-            if(!options.noCentering) {
+            if (!options.noCentering) {
                 map.setCenter(location, 15, {
                     checkZoomRange: true
                 });
             }
 
             // Установка метки по координатам местоположения (если нужно).
-            if(!options.noPlacemark) {
+            if (!options.noPlacemark) {
                 // Удаляем старую метку.
-                if(placemark) {
+                if (placemark) {
                     map.geoObjects.remove(placemark);
                 }
-                this._placemark = placemark = new ymaps.Placemark(location, {}, { preset: 'geolocation#icon' });
+                this._placemark = placemark = new ymaps.Placemark(location, {}, {preset: 'geolocation#icon'});
                 map.geoObjects.add(placemark);
                 // Показываем адрес местоположения в хинте метки.
                 this.getLocationInfo(placemark);
             }
 
             // Показываем точность определения местоположения (если нужно).
-            if(!options.noAccuracy) {
+            if (!options.noAccuracy) {
                 // Удаляем старую точность.
-                if(circle) {
+                if (circle) {
                     map.geoObjects.remove(circle);
                 }
-                this._circle = circle = new ymaps.Circle([location, accuracy], {}, { opacity: 0.5 });
+                this._circle = circle = new ymaps.Circle([location, accuracy], {}, {opacity: 0.5});
                 map.geoObjects.add(circle);
             }
+
+            if (options.point != undefined) {
+                options.point.geometry.setCoordinates(location);
+            }
+
         },
         /**
          * Получение адреса по координатам метки.
@@ -186,7 +193,7 @@ ymaps.ready(function () {
                 .then(function (res) {
                     var result = res.geoObjects.get(0);
 
-                    if(result) {
+                    if (result) {
                         point.properties.set('hintContent', result.properties.get('name'));
                     }
                 });
@@ -213,7 +220,7 @@ GeolocationButton.ERRORS = [
 function GeolocationButtonHint(button) {
     this._button = button;
     this._map = button.getMap();
-    this._offset = { left: 35, top: -18 };
+    this._offset = {left: 35, top: -18};
 }
 /**
  * Отображает хинт справа от кнопки.
@@ -244,7 +251,7 @@ GeolocationButtonHint.prototype.show = function (text) {
 GeolocationButtonHint.prototype.hide = function (timeout) {
     var hint = this._hint;
 
-    if(hint) {
+    if (hint) {
         setTimeout(function () {
             hint.hide();
         }, timeout);

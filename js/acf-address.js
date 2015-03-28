@@ -21,6 +21,24 @@
         var addressMap = undefined;
 
         /**
+         * Метка
+         * @type {ymaps.GeoObject}
+         */
+        var geoPoint = new ymaps.GeoObject({
+            geometry: {
+                type: "Point",
+                coordinates: centerMap
+            }
+        }, {
+            preset: 'islands#blackStretchyIcon',
+            draggable: true
+        });
+
+        geoPoint.events.add('dragend', function () {
+            changeLocation();
+        });
+
+        /**
          * Кнопка определения местоположения
          * @type {GeolocationButton}
          */
@@ -30,7 +48,9 @@
                 title: 'Определить местоположение'
             },
             geolocationOptions: {
-                enableHighAccuracy: true
+                enableHighAccuracy: true,
+                noPlacemark: false,
+                point: geoPoint
             }
         }, {
             selectOnClick: false
@@ -54,24 +74,6 @@
                 changeLocation();
             });
 
-        });
-
-        /**
-         * Метка
-         * @type {ymaps.GeoObject}
-         */
-        var geoPoint = new ymaps.GeoObject({
-            geometry: {
-                type: "Point",
-                coordinates: centerMap
-            }
-        }, {
-            preset: 'islands#blackStretchyIcon',
-            draggable: true
-        });
-
-        geoPoint.events.add('dragend', function () {
-            changeLocation();
         });
 
         /**
