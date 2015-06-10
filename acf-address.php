@@ -21,13 +21,6 @@ function include_field_types_address($version)
 
 add_action('acf/include_field_types', 'include_field_types_address');
 
-function register_fields_address()
-{
-    include_once('acf-address-v4.php');
-}
-
-add_action('acf/register_fields', 'register_fields_address');
-
 /**
  * Функция для использования в шаблонах
  *
